@@ -415,13 +415,15 @@
 
     // toque/clique real (sem arrastar) num profissional = seleciona e agenda
     // com ele. O navegador ja cancela sozinho o "click" quando o dedo arrasta
-    // mais que uns poucos pixels, entao isso nao briga com o arrasto acima --
-    // e e bem mais confiavel que tentar medir "foi toque ou arrasto" na mao.
-    slides.forEach(function(slide){
-      slide.addEventListener('click', function(){
-        var link = slide.getAttribute('data-link');
-        if (link) location.href = link;
-      });
+    // mais que uns poucos pixels, entao isso nao briga com o arrasto acima.
+    // Importante: o click tem que ficar no proprio "slider", nao em cada
+    // ".prof-slide" -- o slider.setPointerCapture(...) la em cima faz o
+    // evento de click final "pertencer" ao slider, nao ao slide individual,
+    // entao um listener em cada slide nunca disparava. Como o click so sai
+    // quando NAO houve arrasto, o slide certo continua sendo o "indice" atual.
+    slider.addEventListener('click', function(){
+      var link = slides[indice].getAttribute('data-link');
+      if (link) location.href = link;
     });
   })();
 
