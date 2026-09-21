@@ -94,6 +94,21 @@
     font-size:.72rem;letter-spacing:.03em;background:var(--preto);
   }
 
+  /* ===== botao flutuante do whatsapp ===== */
+  .whats-flutuante{
+    position:fixed;right:18px;bottom:18px;z-index:40;
+    width:56px;height:56px;border-radius:50%;
+    background:linear-gradient(180deg,#2be26b,#1da851);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 20px rgba(0,0,0,.5);
+    animation:whatsPulso 2.4s ease-in-out infinite;
+  }
+  .whats-flutuante svg{width:29px;height:29px;fill:#fff}
+  @keyframes whatsPulso{
+    0%,100%{box-shadow:0 8px 20px rgba(0,0,0,.5),0 0 0 0 rgba(43,226,107,.55)}
+    50%{box-shadow:0 8px 20px rgba(0,0,0,.5),0 0 0 10px rgba(43,226,107,0)}
+  }
+
   /* ===== modal agendar ===== */
   .modal-veu{
     position:fixed;inset:0;z-index:50;display:none;
@@ -208,6 +223,10 @@
   </div>
 
   <p class="creditos">© 2026 Barbearia Los Piratas</p>
+
+  <a class="whats-flutuante" href="https://wa.me/5521993408188" target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.8 14.15c-.24.68-1.39 1.3-1.92 1.38-.49.08-1.11.11-1.79-.11-.41-.13-.94-.3-1.62-.59-2.85-1.23-4.71-4.1-4.85-4.29-.14-.19-1.16-1.54-1.16-2.94 0-1.4.73-2.09.99-2.37.26-.28.57-.35.76-.35.19 0 .38 0 .55.01.18.01.41-.07.64.49.24.57.81 1.98.88 2.12.07.14.11.31.02.5-.09.19-.14.31-.28.48-.14.17-.29.37-.42.5-.14.14-.28.28-.12.56.16.28.71 1.17 1.52 1.9 1.05.94 1.93 1.23 2.21 1.37.28.14.44.12.6-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.61-.13.25.09 1.58.75 1.85.88.27.14.45.2.52.32.07.11.07.66-.17 1.34z"/></svg>
+  </a>
 </div>
 
 <div class="modal-veu" id="modalVeu">
