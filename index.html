@@ -1,0 +1,441 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Barbearia Los Piratas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --preto:#0a0a0a;
+    --preto-2:#141414;
+    --vermelho:#e02323;
+    --vermelho-escuro:#8f1414;
+    --branco:#f5f5f5;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:#000;color:var(--branco);
+    font-family:'Oswald',system-ui,sans-serif;
+    display:flex;justify-content:center;
+  }
+  .site{width:100%;max-width:480px;background:var(--preto);min-height:100vh;overflow:hidden}
+  img{display:block;max-width:100%}
+
+  /* ===== nav ===== */
+  .nav{
+    position:relative;display:flex;align-items:center;justify-content:space-between;
+    padding:16px 18px;background:
+      radial-gradient(ellipse 120% 100% at 30% 0%, #1a1a1a 0%, #0a0a0a 60%);
+  }
+  .nav::before, .nav::after{
+    content:"";position:absolute;left:0;right:0;height:1px;
+    background:linear-gradient(90deg, transparent, rgba(224,35,35,.5), transparent);
+  }
+  .nav::before{top:0}
+  .nav::after{bottom:0}
+  .hamb{background:none;border:none;padding:6px;cursor:pointer;display:flex;flex-direction:column;gap:5px}
+  .hamb span{display:block;width:26px;height:3px;background:var(--branco);border-radius:2px;transition:.2s}
+  .hamb[aria-expanded="true"] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+  .hamb[aria-expanded="true"] span:nth-child(2){opacity:0}
+  .hamb[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+  .btn-agendar{
+    background:linear-gradient(180deg,#ef3a3a,var(--vermelho-escuro));color:#fff;border:none;
+    border-radius:30px;padding:11px 22px;font-weight:700;font-size:.8rem;letter-spacing:.04em;
+    display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none;
+    box-shadow:0 6px 16px rgba(224,35,35,.35);
+  }
+  .btn-agendar svg{width:15px;height:15px;flex-shrink:0}
+
+  .menu{
+    max-height:0;overflow:hidden;background:#0a0a0a;transition:max-height .3s ease;
+    border-bottom:1px solid transparent;
+  }
+  .menu.aberto{max-height:220px;border-bottom-color:rgba(224,35,35,.35)}
+  .menu a{
+    display:block;padding:14px 22px;color:var(--branco);text-decoration:none;
+    font-weight:600;font-size:.9rem;letter-spacing:.03em;border-top:1px solid rgba(255,255,255,.06);
+  }
+  .menu a:hover{color:var(--vermelho)}
+
+  /* ===== hero ===== */
+  .hero{position:relative;width:100%;aspect-ratio:1589/989;overflow:hidden;background:#000}
+  .hero .foto{width:100%;height:100%;object-fit:cover;object-position:70% 50%}
+  .hero .veu{
+    position:absolute;inset:0;
+    background:linear-gradient(100deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,.55) 38%, rgba(0,0,0,.08) 62%, transparent 78%),
+      linear-gradient(0deg, rgba(0,0,0,.35), transparent 30%);
+  }
+  .hero .logo{position:absolute;top:14%;left:20%;transform:translateX(-50%);width:74%;z-index:2;filter:drop-shadow(0 8px 16px rgba(0,0,0,.6))}
+
+  /* ===== faixa de icones ===== */
+  .barra-wrap{background:var(--preto);border-top:1px solid rgba(255,255,255,.06);border-bottom:2px solid var(--vermelho-escuro);padding:14px 0 10px}
+
+  /* ===== servicos ===== */
+  .servicos{background:var(--preto);padding:20px 5% 6px}
+  .servicos-titulo{width:calc(100% + 10%);max-width:calc(100% + 10%);margin:0 0 18px -5%}
+  .fotos-slide{position:relative;width:calc(100% + 10%);margin-left:-5%;aspect-ratio:915/250;overflow:hidden;background:#000}
+  .fotos-slide__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s ease}
+  .fotos-slide__img.is-ativa{opacity:1}
+
+  /* ===== rodape ===== */
+  .rodape-wrap{margin-top:22px;position:relative}
+  .rodape{width:100%}
+  .loc-btn-overlay{
+    position:absolute;left:55.5%;top:43%;width:25%;height:16%;
+    background:transparent;border:none;padding:0;cursor:pointer;
+  }
+
+  .creditos{
+    text-align:center;padding:16px 20px 26px;color:rgba(255,255,255,.35);
+    font-size:.72rem;letter-spacing:.03em;background:var(--preto);
+  }
+
+  /* ===== modal agendar ===== */
+  .modal-veu{
+    position:fixed;inset:0;z-index:50;display:none;
+    align-items:center;justify-content:center;padding:24px;
+    background:rgba(4,4,4,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  }
+  .modal-veu.aberto{display:flex}
+  .modal-fechar{
+    position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;
+    background:rgba(255,255,255,.08);border:none;color:var(--branco);font-size:1.2rem;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;
+  }
+  .modal-conteudo{
+    width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;gap:26px;
+    animation:modal-entra .3s ease;
+  }
+  @keyframes modal-entra{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+  .modal-conteudo h2{
+    text-align:center;font-size:1.05rem;letter-spacing:.06em;margin:0;
+    text-transform:uppercase;color:rgba(255,255,255,.75);
+  }
+  .modal-conteudo h2 span{color:var(--vermelho);display:block;font-size:1.5rem;letter-spacing:.03em;margin-top:2px}
+  .prof-slider{width:100%;overflow:hidden;touch-action:pan-y}
+  .prof-track{display:flex;transition:transform .35s cubic-bezier(.22,.68,0,1)}
+  .prof-slide{flex:0 0 100%;display:flex;flex-direction:column;align-items:center;gap:18px;user-select:none}
+  .avatar-grande{
+    width:250px;height:250px;border-radius:50%;overflow:hidden;
+    border:5px solid var(--vermelho);box-shadow:0 0 0 8px rgba(224,35,35,.14),0 25px 45px rgba(0,0,0,.6);
+    pointer-events:none;
+  }
+  .avatar-grande img{width:100%;height:100%;object-fit:cover;-webkit-user-drag:none}
+  .prof-nome{font-size:1.4rem;font-weight:700;letter-spacing:.03em}
+  .deslize-dica{
+    display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.5);
+    font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .deslize-dica svg{width:20px;height:14px;animation:deslizar-anim 1.6s ease-in-out infinite}
+  @keyframes deslizar-anim{
+    0%,100%{transform:translateX(0);opacity:.5}
+    50%{transform:translateX(6px);opacity:1}
+  }
+  .prof-dots{display:flex;gap:8px}
+  .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);transition:background .2s,transform .2s}
+  .dot.ativo{background:var(--vermelho);transform:scale(1.3)}
+
+  /* ===== modal localizacao ===== */
+  .loc-endereco{
+    text-align:center;color:rgba(255,255,255,.6);font-size:.85rem;
+    line-height:1.5;margin:0;max-width:320px;
+  }
+  .mini-mapa{
+    position:relative;width:100%;max-width:320px;aspect-ratio:1/1;border-radius:14px;overflow:hidden;
+    border:1px solid rgba(224,35,35,.35);box-shadow:0 20px 40px rgba(0,0,0,.5);background:#1a1a1a;
+    touch-action:none;
+  }
+  .mini-mapa img{
+    position:absolute;left:50%;top:50%;width:1000px;max-width:none;
+    transform:translate(-50%,-50%) scale(.667);
+    transform-origin:center center;
+    transition:transform .2s ease;
+    user-select:none;-webkit-user-drag:none;
+  }
+  .mapa-zoom{
+    position:absolute;right:10px;bottom:10px;z-index:1;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .mapa-zoom button{
+    width:32px;height:32px;border-radius:8px;border:1px solid rgba(224,35,35,.4);
+    background:rgba(10,10,10,.75);color:var(--branco);font-size:1.1rem;font-weight:700;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;
+    backdrop-filter:blur(2px);
+  }
+  .mapa-zoom button:active{background:rgba(224,35,35,.4)}
+</style>
+</head>
+<body>
+<div class="site">
+
+  <div class="nav">
+    <button class="hamb" id="btnMenu" aria-expanded="false" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+    <button class="btn-agendar" id="btnAgendar" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+      AGENDAR
+    </button>
+  </div>
+  <nav class="menu" id="menu">
+    <a href="#inicio">Início</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#rodape">Localização</a>
+  </nav>
+
+  <section class="hero" id="inicio">
+    <img class="foto" src="lp/hero.png" alt="Barbeiro fazendo a barba de um cliente na Barbearia Los Piratas">
+    <div class="veu"></div>
+    <img class="logo" src="lp/logo.png" alt="Barbearia Los Piratas">
+  </section>
+
+  <div class="barra-wrap">
+    <img class="barra" src="lp/barra.png" alt="Corte masculino, barba modelada, navalha tradicional, sobrancelha na tesoura">
+  </div>
+
+  <section class="servicos" id="servicos">
+    <img class="servicos-titulo" src="lp/servicos-titulo.png" alt="Nossos serviços — mais que um corte, é um estilo de vida.">
+    <div class="fotos-slide">
+      <img class="fotos-slide__img is-ativa" src="lp/card1-final.png" alt="Corte Masculino — estilo e personalidade em cada detalhe">
+      <img class="fotos-slide__img" src="lp/card2-final.png" alt="Barba Modelada — valorize o seu estilo">
+      <img class="fotos-slide__img" src="lp/card3-final.png" alt="Navalha Tradicional — precisão e acabamento impecável">
+      <img class="fotos-slide__img" src="lp/card4-final.png" alt="Sobrancelha — mais harmonia para o seu rosto">
+    </div>
+  </section>
+
+  <div class="rodape-wrap" id="rodape">
+    <img class="rodape" src="lp/rodape.png" alt="Seu estilo é nossa missão — venha nos fazer uma visita">
+    <button class="loc-btn-overlay" id="btnLocalizacao" type="button" aria-label="Ver localização"></button>
+  </div>
+
+  <p class="creditos">© 2026 Barbearia Los Piratas</p>
+</div>
+
+<div class="modal-veu" id="modalVeu">
+  <button class="modal-fechar" id="modalFechar" type="button" aria-label="Fechar">✕</button>
+  <div class="modal-conteudo">
+    <h2>Selecione o <span>profissional</span></h2>
+    <div class="prof-slider" id="profSlider">
+      <div class="prof-track" id="profTrack">
+        <div class="prof-slide" data-nome="Warllon" data-link="https://agendaservico.com/barbearialospiratas">
+          <div class="avatar-grande"><img src="lp/warlon.jpg" alt="Warllon" draggable="false"></div>
+          <span class="prof-nome">Warllon</span>
+        </div>
+        <div class="prof-slide" data-nome="Matheus" data-link="https://belvio.com.br/#/marcar/mtsbarber?s=P3xyIS">
+          <div class="avatar-grande"><img src="lp/matheus.jpg" alt="Matheus" draggable="false"></div>
+          <span class="prof-nome">Matheus</span>
+        </div>
+      </div>
+    </div>
+    <div class="deslize-dica">
+      <span>deslize para o lado</span>
+      <svg viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8h18M14 2l6 6-6 6"/></svg>
+    </div>
+    <div class="prof-dots" id="profDots">
+      <span class="dot ativo"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+</div>
+
+<div class="modal-veu" id="modalLoc">
+  <button class="modal-fechar" id="modalLocFechar" type="button" aria-label="Fechar">✕</button>
+  <div class="modal-conteudo">
+    <h2>Nossa <span>localização</span></h2>
+    <div class="mini-mapa" id="miniMapa">
+      <img id="imgMapa" src="lp/mapa.png" alt="Mapa mostrando a localização da Barbearia Los Piratas na Rua Capitão Borges Couto, 294">
+      <div class="mapa-zoom">
+        <button type="button" id="mapaZoomMais" aria-label="Aumentar zoom">+</button>
+        <button type="button" id="mapaZoomMenos" aria-label="Diminuir zoom">−</button>
+      </div>
+    </div>
+    <p class="loc-endereco">Rua Capitão Borges Couto, 294 — Senador Camará, Rio de Janeiro, RJ</p>
+  </div>
+</div>
+
+<script>
+  var btn = document.getElementById('btnMenu');
+  var menu = document.getElementById('menu');
+  btn.addEventListener('click', function(){
+    var aberto = menu.classList.toggle('aberto');
+    btn.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.remove('aberto');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // modal localizacao: mini mapa com zoom e arraste
+  (function(){
+    var abrirBtn = document.getElementById('btnLocalizacao');
+    var veu = document.getElementById('modalLoc');
+    var fecharBtn = document.getElementById('modalLocFechar');
+    var miniMapa = document.getElementById('miniMapa');
+    var imgMapa = document.getElementById('imgMapa');
+    var btnMais = document.getElementById('mapaZoomMais');
+    var btnMenos = document.getElementById('mapaZoomMenos');
+
+    var ESCALA_INICIAL = .667, ESCALA_MIN = .5, ESCALA_MAX = 2.6, PASSO = 1.35;
+    var escala = ESCALA_INICIAL, panX = 0, panY = 0;
+    var arrastando = false, startX = 0, startY = 0, panXInicial = 0, panYInicial = 0;
+
+    function aplicar(comTransicao){
+      imgMapa.style.transition = comTransicao ? 'transform .2s ease' : 'none';
+      imgMapa.style.transform = 'translate(-50%,-50%) translate(' + panX + 'px,' + panY + 'px) scale(' + escala + ')';
+    }
+    function resetar(){
+      escala = ESCALA_INICIAL; panX = 0; panY = 0;
+      aplicar(false);
+    }
+
+    function abrir(){
+      veu.classList.add('aberto');
+      document.body.style.overflow = 'hidden';
+      resetar();
+    }
+    function fechar(){
+      veu.classList.remove('aberto');
+      document.body.style.overflow = '';
+    }
+
+    abrirBtn.addEventListener('click', abrir);
+    fecharBtn.addEventListener('click', fechar);
+    veu.addEventListener('click', function(e){
+      if (e.target === veu) fechar();
+    });
+
+    btnMais.addEventListener('click', function(){
+      escala = Math.min(ESCALA_MAX, escala * PASSO);
+      aplicar(true);
+    });
+    btnMenos.addEventListener('click', function(){
+      escala = Math.max(ESCALA_MIN, escala / PASSO);
+      aplicar(true);
+    });
+    miniMapa.addEventListener('dblclick', function(){
+      escala = Math.min(ESCALA_MAX, escala * PASSO);
+      aplicar(true);
+    });
+
+    miniMapa.addEventListener('pointerdown', function(e){
+      if (e.target.closest('.mapa-zoom')) return;
+      arrastando = true;
+      startX = e.clientX; startY = e.clientY;
+      panXInicial = panX; panYInicial = panY;
+      miniMapa.setPointerCapture(e.pointerId);
+    });
+    miniMapa.addEventListener('pointermove', function(e){
+      if (!arrastando) return;
+      panX = panXInicial + (e.clientX - startX) / escala;
+      panY = panYInicial + (e.clientY - startY) / escala;
+      aplicar(false);
+    });
+    function soltarMapa(){ arrastando = false; }
+    miniMapa.addEventListener('pointerup', soltarMapa);
+    miniMapa.addEventListener('pointercancel', soltarMapa);
+    miniMapa.addEventListener('pointerleave', soltarMapa);
+
+    miniMapa.addEventListener('wheel', function(e){
+      e.preventDefault();
+      if (e.deltaY < 0) escala = Math.min(ESCALA_MAX, escala * 1.1);
+      else escala = Math.max(ESCALA_MIN, escala / 1.1);
+      aplicar(false);
+    }, { passive: false });
+  })();
+
+  // modal agendar: seleciona o profissional (carrossel com deslizar)
+  (function(){
+    var abrirBtn = document.getElementById('btnAgendar');
+    var veu = document.getElementById('modalVeu');
+    var fecharBtn = document.getElementById('modalFechar');
+    var slider = document.getElementById('profSlider');
+    var track = document.getElementById('profTrack');
+    var slides = track.querySelectorAll('.prof-slide');
+    var dots = document.querySelectorAll('#profDots .dot');
+    var total = slides.length;
+    var indice = 0;
+    var arrastando = false;
+    var startX = 0;
+    var deltaX = 0;
+
+    function irPara(i){
+      indice = Math.max(0, Math.min(total - 1, i));
+      track.style.transition = 'transform .35s cubic-bezier(.22,.68,0,1)';
+      track.style.transform = 'translateX(' + (-indice * 100) + '%)';
+      dots.forEach(function(d, di){ d.classList.toggle('ativo', di === indice); });
+    }
+
+    function abrir(){
+      veu.classList.add('aberto');
+      document.body.style.overflow = 'hidden';
+      irPara(0);
+    }
+    function fechar(){
+      veu.classList.remove('aberto');
+      document.body.style.overflow = '';
+    }
+
+    abrirBtn.addEventListener('click', abrir);
+    fecharBtn.addEventListener('click', fechar);
+    veu.addEventListener('click', function(e){
+      if (e.target === veu) fechar();
+    });
+
+    slider.addEventListener('pointerdown', function(e){
+      arrastando = true;
+      startX = e.clientX;
+      deltaX = 0;
+      track.style.transition = 'none';
+      slider.setPointerCapture(e.pointerId);
+    });
+    slider.addEventListener('pointermove', function(e){
+      if (!arrastando) return;
+      deltaX = e.clientX - startX;
+      var base = -indice * slider.offsetWidth;
+      track.style.transform = 'translateX(' + (base + deltaX) + 'px)';
+    });
+    function soltar(){
+      if (!arrastando) return;
+      arrastando = false;
+      var limiar = 40;
+      if (deltaX < -limiar && indice < total - 1) irPara(indice + 1);
+      else if (deltaX > limiar && indice > 0) irPara(indice - 1);
+      else irPara(indice);
+    }
+    slider.addEventListener('pointerup', soltar);
+    slider.addEventListener('pointercancel', soltar);
+    slider.addEventListener('pointerleave', function(){ if (arrastando) soltar(); });
+
+    // toque/clique real (sem arrastar) num profissional = seleciona e agenda
+    // com ele. O navegador ja cancela sozinho o "click" quando o dedo arrasta
+    // mais que uns poucos pixels, entao isso nao briga com o arrasto acima --
+    // e e bem mais confiavel que tentar medir "foi toque ou arrasto" na mao.
+    slides.forEach(function(slide){
+      slide.addEventListener('click', function(){
+        var link = slide.getAttribute('data-link');
+        if (link) location.href = link;
+      });
+    });
+  })();
+
+  // slide dos servicos: uma imagem por vez, troca a cada 2s, loop infinito
+  (function(){
+    var slides = document.querySelectorAll('.fotos-slide__img');
+    if (!slides.length) return;
+    var indiceAtual = 0;
+    setInterval(function(){
+      slides[indiceAtual].classList.remove('is-ativa');
+      indiceAtual = (indiceAtual + 1) % slides.length;
+      slides[indiceAtual].classList.add('is-ativa');
+    }, 3000);
+  })();
+</script>
+</body>
+</html>
