@@ -39,19 +39,8 @@
   .nav::before{top:0}
   .nav::after{bottom:0}
   /* neon circulando o botao Agendar -- mesma tecnica da logo do painel
-     smartlinkdigital: brilho vermelho pulsante por baixo + anel giratorio
-     (conic-gradient recortado em mascara) passando por cima. */
+     smartlinkdigital: anel giratorio (conic-gradient recortado em mascara). */
   .btn-agendar-wrap{position:relative;border-radius:14px}
-  .btn-agendar-wrap::before{
-    content:"";position:absolute;inset:-6px;border-radius:20px;z-index:0;pointer-events:none;
-    border:2px solid rgba(255,45,58,.9);
-    box-shadow:0 0 16px rgba(255,30,45,.85),0 0 44px rgba(255,30,45,.55);
-    animation:neonPulso 2s ease-in-out infinite;
-  }
-  @keyframes neonPulso{
-    0%,100%{box-shadow:0 0 12px rgba(255,30,45,.65),0 0 30px rgba(255,30,45,.4);border-color:rgba(255,45,58,.7)}
-    50%{box-shadow:0 0 26px rgba(255,30,45,1),0 0 68px rgba(255,30,45,.78);border-color:rgba(255,90,100,1)}
-  }
   .neon-giro{
     position:absolute;inset:-3px;border-radius:17px;padding:3px;z-index:1;pointer-events:none;overflow:hidden;
     -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
